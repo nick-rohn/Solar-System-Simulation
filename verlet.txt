@@ -1,0 +1,13 @@
+Propagator verlet
+10
+Sole	1.9885e+30
+Mercurio	3.302e+23
+Venere	4.8685e+24
+Terra	5.97219e+24
+Marte	6.4171e+23
+Giove	1.89819e+27
+Saturno	5.6834e+26
+Urano	8.6813e+25
+Nettuno	1.02409e+26
+Cometa di Halley	2.2e+14
+

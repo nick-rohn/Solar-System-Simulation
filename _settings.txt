@@ -1,0 +1,8 @@
+input solar_system.dat
+verlet verlet.txt
+runge-kutta rungekutta.txt
+static graph.txt
+iterations 1000
+timestep 1000
+
+debug 11
