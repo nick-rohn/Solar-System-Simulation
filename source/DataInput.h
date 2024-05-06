@@ -20,7 +20,7 @@ class DataInput {
     private:
 
         // get a star system
-        virtual const StarSystem* get() = 0;
+        virtual StarSystem* get() = 0;
 
 };
 

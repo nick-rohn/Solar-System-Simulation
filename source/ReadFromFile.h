@@ -23,13 +23,13 @@ class ReadFromFile: public DataInput {
     private:
 
         // get a star system
-        const StarSystem* get() override;
+        StarSystem* get() override;
 
         // input file
         std::ifstream* file;
 
         // read and event
-        const StarSystem* ReadFile();
+        StarSystem* ReadFile();
 
 };
 

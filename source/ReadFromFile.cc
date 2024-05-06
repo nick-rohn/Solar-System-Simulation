@@ -25,13 +25,13 @@ ReadFromFile::~ReadFromFile() {
 
 
 // get a StarSystem
-const StarSystem* ReadFromFile::get() {
+StarSystem* ReadFromFile::get() {
     return ReadFile();
 }
 
 
 // create a StarSystem
-const StarSystem* ReadFromFile::ReadFile() {
+StarSystem* ReadFromFile::ReadFile() {
 
     // StarSystem pointer and identifier
     StarSystem* ss = new StarSystem;

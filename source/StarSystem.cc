@@ -21,9 +21,12 @@ StarSystem::Planet::Planet( string n, double m,
 
 // CONSTRUCTORS
 
-StarSystem::StarSystem(){
-    // reserve space for planets
-    planets.reserve( 10 );
+StarSystem::StarSystem():
+    locked( false ){
+
+        // reserve space for planets
+        planets.reserve( 10 );
+
 }
 /*
 StarSystem::StarSystem( const StarSystem& x ){
@@ -58,12 +61,16 @@ StarSystem::~StarSystem(){
 void StarSystem::Add( string n, double m,
                   double px, double py, double pz,
                   double vx, double vy, double vz ){
-    
+    if( locked ){
+        cout << "ERROR: StarSystem locked; couldn't add " << n << " to the planets list" << endl << endl;
+        return;
+    }
     Planet* p = new Planet( n, m, px, py, pz, vx, vy, vz );
     planets.push_back( p );
 
     return;
 }
+
 
 // write on file star system info
 ofstream* StarSystem::Print( ofstream* file ) const {
@@ -79,38 +86,29 @@ ofstream* StarSystem::Print( ofstream* file ) const {
 
 // retrieve planets information in matrix form
 Matrix StarSystem::GetMatrix( const Data& request ) const {
-    unsigned int n = planets.size();
-    Matrix matrix( n );
+
     switch ( request ){
         case Data::pos:
-            for( unsigned int i = 0; i < n; i++) matrix[i] = planets[i]->pos;
-            break;
+            return position;
         
         case Data::vel:
-            for( unsigned int i = 0; i < n; i++) matrix[i] = planets[i]->vel;
-            break;
+            return velocity;
 
         case Data::grav:
-            matrix = Gravity( GetMatrix( Data::pos ) );
+            return Gravity( position );
+        
+        default:
+            return Matrix( planets.size() );
     }
-    return matrix;
+
 }
 
 
 // calculate gravitational force in given position
-Matrix StarSystem::Gravity( const Matrix pos ) const {
+Matrix StarSystem::Gravity( const Matrix& pos ) const {
 
     unsigned int n = planets.size();
     Matrix grav( n );
-
-    static vector<double> masses;
-    static u_int curr = 0;
-    // check if number of planets has changed
-    if( n != curr ){
-        masses.resize( n );
-        // save masses into vector for easy access
-        for( ; curr < n; curr++ ) masses[curr] = planets[curr]->mass;
-    }
 
     for( u_int i = 0; i < (n-1); i++ )
         for( u_int j = (i+1); j < n; j++ ){
@@ -122,10 +120,34 @@ Matrix StarSystem::Gravity( const Matrix pos ) const {
             grav[j] -= f;
         }
 
-
     return grav;
 }
 
+
+
+// block class from further modifications
+void StarSystem::Lock(){
+
+    locked = true;
+
+    unsigned int n = planets.size();
+
+    // save data for easy access
+    // masses
+    masses.resize( n );
+    for( u_int i = 0 ; i < n; i++ ) masses[i] = planets[i]->mass;
+
+    // positions
+    position = Matrix( n );
+    for( u_int i = 0; i < n; i++) position[i] = planets[i]->pos;
+
+    // velocities
+    velocity = Matrix( n );
+    for( u_int i = 0; i < n; i++) velocity[i] = planets[i]->vel;
+
+    return;
+
+}
 
 
 

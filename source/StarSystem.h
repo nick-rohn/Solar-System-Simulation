@@ -48,17 +48,26 @@ class StarSystem{
         Matrix GetMatrix( const Data& request ) const;
 
         // calculate gravitational force
-        Matrix Gravity( const Matrix pos ) const;
+        Matrix Gravity( const Matrix& pos ) const;
+
+        // block class from further modifications
+        void Lock();
         
     private:
 
         vector<Planet*> planets;
+        bool locked;
+        // data stored for easy access
+        vector<double> masses;
+        Matrix position, velocity;
+
 /*
         // create copy of the star system
         void Copy( const StarSystem& x );
         // move star system
         void Move( StarSystem& x );
 */
+
         // delete dynamic pointers
         void Clear();
 
