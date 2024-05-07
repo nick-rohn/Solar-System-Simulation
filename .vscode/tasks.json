@@ -12,7 +12,7 @@
                 "-pthread",
                 "-I", "${workspaceFolder}",
                 "-o", "${workspaceFolder}/main",
-                "${workspaceFolder}/source/*.cc"
+                "${workspaceFolder}/cpp/*.cc"
             ],
             "options": {
                 "cwd": "${workspaceRoot}"

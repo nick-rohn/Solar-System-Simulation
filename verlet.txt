@@ -1,5 +1,6 @@
 Propagator verlet
-10
+
+10 planets:
 Sole	1.9885e+30
 Mercurio	3.302e+23
 Venere	4.8685e+24

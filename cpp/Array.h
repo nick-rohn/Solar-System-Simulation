@@ -12,60 +12,75 @@ class Array {
 
         // create empty array
         Array();
+
         // initialize array[s] at 0
         template <typename U>
-        Array( U s );
+            Array( U s );
+
         // initialize array with given parameters
         template <typename ... U>
-        Array( U ... input );
+            Array( U ... input );
 
+
+        // copy and move constructors
         Array( const Array<T>& a );
         Array( Array<T>&& a ) noexcept;
 
         ~Array();
 
+        // assignment operators
         Array<T>& operator=( const Array<T>& a );
         Array<T>& operator=( Array<T>&& a ) noexcept;
-
-        typedef Array<Array<double>> Matrix;
-        typedef Array<Matrix> DoubleMatrix;
 
         // array functions
         u_int size() const;
         T& operator[]( u_int i );
         const T& operator[]( u_int i ) const;
 
+
         // vector module
         double module() const;
+
+
+
+        //OPERATORS
 
         // addition
         Array<T>& operator+=( const Array<T>& add );
         template <class U>
-        friend Array<U> operator+( Array<U> lhs, const Array<U>& rhs );
+            friend Array<U> operator+( Array<U> lhs, const Array<U>& rhs );
+
 
         // subtraction
         Array<T>& operator-=( const Array<T>& add );
         template <class U>
-        friend Array<U> operator-( Array<U> lhs, const Array<U>& rhs );
+            friend Array<U> operator-( Array<U> lhs, const Array<U>& rhs );
+
 
         // multiplication
         template <typename U>
-        Array<T>& operator*=( const U& fact );
+            Array<T>& operator*=( const U& fact );
+
         template <class U, typename V>
-        friend Array<U> operator*( Array<U> arr, const V& fact );
+            friend Array<U> operator*( Array<U> arr, const V& fact );
+
         template <class U, typename V>
-        friend Array<U> operator*( const V& fact, Array<U> arr );
+            friend Array<U> operator*( const V& fact, Array<U> arr );
+
 
         // division
         template <typename U>
-        Array<T>& operator/=( const U& fact );
+            Array<T>& operator/=( const U& fact );
+
         template <class U, typename V>
-        friend Array<U> operator/( Array<U> arr, const V& fact );
+            friend Array<U> operator/( Array<U> arr, const V& fact );
 
 
         // print content in a line
         template <class U>
-        friend ostream& operator<<( ostream& os, const Array<U>& arr );
+            friend ostream& operator<<( ostream& os, const Array<U>& arr );
+
+
 
     private:
 

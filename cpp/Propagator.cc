@@ -24,7 +24,8 @@ void Propagator::StartUp(){
     if( debug >= debug_level ) cout << "Creating file..." << endl;
     // open file (TODO: name with settings)
     file = new ofstream( settings->value( type ) );
-    *file << "Propagator " << type << endl;
+    *file << "Propagator " << type << endl <<endl;
+    // TODO: header with info
 
     ss->Print(file);
 
