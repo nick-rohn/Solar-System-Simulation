@@ -4,6 +4,8 @@
 #include <string>
 #include <fstream>
 
+using namespace std;
+
 class StarSystem;
 class Settings;
 
@@ -11,7 +13,7 @@ class Propagator{
 
     public:
 
-        Propagator( const Settings* info, const std::string& name );
+        Propagator( const Settings* info, const string& name );
         // deleted copy constructor and assignment to prevent unadvertent copy
         Propagator           ( const Propagator& x ) = delete;
         Propagator& operator=( const Propagator& x ) = delete;
@@ -19,18 +21,23 @@ class Propagator{
         virtual ~Propagator();
 
         // function to run the propagator
-        void run( const StarSystem* ssi );
-        std::string GetType() const;
+        void run( const StarSystem* ssi,
+                  const string ts, const string it );
+        string GetType() const;
 
     protected:
 
         const Settings* settings;
         // type of propagator
-        const std::string type = "default";
+        const string type = "default";
         // writing file
-        std::ofstream* file;
-        
+        string filename;
+        ofstream* file;
+        // pointer to star system
         const StarSystem *ss;
+        // propagation data
+        double timestep;
+        double iterations;
 
     private:
 

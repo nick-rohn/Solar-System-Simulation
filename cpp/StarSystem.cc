@@ -75,11 +75,15 @@ void StarSystem::Add( string n, double m,
 // write on file star system info
 ofstream* StarSystem::Print( ofstream* file ) const {
     
-    *file << planets.size() << " planets:" << endl;
+    // number of planets
+    *file << "Planets    = " << planets.size() << endl << endl;
+
+    // planets names and masses
     for ( Planet* p : planets ){
         *file << p->name << '\t' << p->mass << endl; 
     }
 
+    *file << endl;
     return file;
 }
 

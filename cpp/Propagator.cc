@@ -5,6 +5,7 @@
 
 #include "StarSystem.h"
 #include "Settings.h"
+#include "Converter.h"
 
 using namespace std;
 
@@ -21,15 +22,17 @@ Propagator::~Propagator(){
 
 // function to be called at execution start
 void Propagator::StartUp(){
+
     if( debug >= debug_level ) cout << "Creating file..." << endl;
-    // open file (TODO: name with settings)
-    file = new ofstream( settings->value( type ) );
-    *file << "Propagator " << type << endl <<endl;
-    // TODO: header with info
 
-    ss->Print(file);
+    // create file
+    file = new ofstream( filename );
 
-    *file << endl;
+    // print header file
+    *file << "Propagator = " << type       << endl;
+    *file << "iterations = " << iterations << endl;
+    *file << "timestep   = " << timestep   << endl;
+    ss->Print( file );
 
     if( debug >= debug_level ) cout << "File created" << endl;
 
@@ -44,7 +47,13 @@ void Propagator::Terminate(){
 }
 
 // function to run the propagator
-void Propagator::run( const StarSystem* ssi ) {
+void Propagator::run( const StarSystem* ssi,
+                      const string ts, const string it ){
+    
+    filename = type + ts + it + ".txt";
+    
+    timestep = Converter::TimeToSec( ts );
+    iterations =  stod( it );
 
     ss = ssi;
 

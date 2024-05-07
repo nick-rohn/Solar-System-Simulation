@@ -17,25 +17,29 @@ static const int debug_level = 7;
 int main( int argc, char *argv[] ){
 
     // store command line parameters
-    Settings* info = new Settings( argc, argv );
+    Settings* settings = new Settings( argc, argv );
 
     // create data source
-    DataInput* dr = DataFactory::create( info );
+    DataInput* dr = DataFactory::create( settings );
 
     // read data
     const StarSystem* ss = dr->read();
     delete dr;
     
     // create list of propagators
-    vector<Propagator*> prop_list = PropagatorFactory::create( info );
+    vector<Propagator*> prop_list = PropagatorFactory::create( settings );
+
+    string ts = settings->value( "timestep" );
+    string it = settings->value( "iterations" );
 
     vector<thread*> threads;
     threads.reserve( prop_list.size() );
 
-    if( debug >= debug_level ) cout << "Initializing threads..." << endl << endl ;
+    if( debug >= debug_level ) cout << endl << "Initializing threads..." << endl << endl;
+    
     // execute each propagator on a different thread
     for( Propagator* p : prop_list ){
-        thread* t = new thread( &Propagator::run, p, ss );
+        thread* t = new thread( &Propagator::run, p, ss, ts, it );
         threads.push_back( t );
         if( debug >= debug_level ) cout << "Thread " << p->GetType() << " initialized" << endl;
     }
@@ -53,7 +57,7 @@ int main( int argc, char *argv[] ){
     // clear memory before execution end
     for( Propagator* p : prop_list ) delete p;
     delete ss;
-    delete info;
+    delete settings;
 
     return 0;
 }
