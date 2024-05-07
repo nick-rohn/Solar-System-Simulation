@@ -10,10 +10,13 @@ class Converter{
 
         Converter();
         ~Converter();
+
+        // convert input string into seconds
         static double TimeToSec( const std::string& in );
 
     private:
 
+        // conversion rates
         static const std::map<char, double> convert;
 
 };

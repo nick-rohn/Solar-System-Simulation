@@ -14,7 +14,7 @@ class DataInput {
 
         virtual ~DataInput();
 
-        // create star system and send to propagators
+        // create star system
         virtual const StarSystem* read();
 
     private:

@@ -12,7 +12,7 @@ class ReadFromFile: public DataInput {
 
     public:
 
-        // read data from file "name"
+        // read data from file
         ReadFromFile( const std::string& name );
         // deleted copy constructor and assignment to prevent unadvertent copy
         ReadFromFile           ( const ReadFromFile& x ) = delete;

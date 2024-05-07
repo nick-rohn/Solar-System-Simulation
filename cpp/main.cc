@@ -29,14 +29,15 @@ int main( int argc, char *argv[] ){
     // create list of propagators
     vector<Propagator*> prop_list = PropagatorFactory::create( settings );
 
+    // get timestep and number of iterations for propagators
     string ts = settings->value( "timestep" );
     string it = settings->value( "iterations" );
 
+    // create threads for parallel execution
     vector<thread*> threads;
     threads.reserve( prop_list.size() );
-
     if( debug >= debug_level ) cout << endl << "Initializing threads..." << endl << endl;
-    
+
     // execute each propagator on a different thread
     for( Propagator* p : prop_list ){
         thread* t = new thread( &Propagator::run, p, ss, ts, it );
@@ -44,7 +45,7 @@ int main( int argc, char *argv[] ){
         if( debug >= debug_level ) cout << "Thread " << p->GetType() << " initialized" << endl;
     }
 
-    // wait for all thread completition
+    // wait for all threads to end
     for( thread* t : threads ){
         t->join();
         delete t;
@@ -54,10 +55,6 @@ int main( int argc, char *argv[] ){
         }
     }
 
-    // clear memory before execution end
-    for( Propagator* p : prop_list ) delete p;
-    delete ss;
-    delete settings;
-
     return 0;
+
 }

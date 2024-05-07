@@ -11,7 +11,7 @@ using namespace std;
 extern int debug;
 static const int debug_level = 3;
 
-// read data from file "name"
+// read data from file
 ReadFromFile::ReadFromFile( const string& name ) {
     if( debug >= debug_level ) cout << "Opening file \"" << name <<"\"..." << endl;
     file = new ifstream( name );

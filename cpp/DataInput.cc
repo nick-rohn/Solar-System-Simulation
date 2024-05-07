@@ -12,6 +12,7 @@ DataInput::DataInput() {
 DataInput::~DataInput() {
 }
 
+// create star system
 const StarSystem* DataInput::read() {
     if( debug >= debug_level ) cout << "Reading data..." << endl;
     StarSystem* ss = get();

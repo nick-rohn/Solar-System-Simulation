@@ -18,7 +18,7 @@ class PropRungeKuttaFactory: public PropagatorFactory::AbsFactory{
         }
 };
 // create global Factory, so it's registered before main execution
-static PropRungeKuttaFactory ver;
+static PropRungeKuttaFactory rk;
 
 PropRungeKutta::PropRungeKutta( const Settings* info, const string& name ):
     Propagator( info, name ){
