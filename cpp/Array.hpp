@@ -217,8 +217,17 @@ Array<U> operator/( Array<U> arr, const V& fact ){
 
 
 
+// print content in a table
+template <class U>
+ostream& operator<<( ostream& os, const Array<Array<U>>& arr ){
+
+    for( u_int i = 0; i < arr.length; i++ ) os << arr.data[i];
+    return os << endl;
+
+}
+
 // print content in a line
-template <typename U>
+template <class U>
 ostream& operator<<( ostream& os, const Array<U>& arr ){
 
     for( u_int i = 0; i < arr.length; i++ ) os << arr.data[i] << '\t';

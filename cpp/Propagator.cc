@@ -29,7 +29,7 @@ void Propagator::StartUp(){
     file = new ofstream( filename );
 
     // print header file
-    *file << "Propagator = " << type       << endl;
+    *file << "propagator = " << type       << endl;
     *file << "iterations = " << iterations << endl;
     *file << "timestep   = " << timestep   << endl;
     ss->Print( file );

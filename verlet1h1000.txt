@@ -1,7 +1,7 @@
-Propagator = verlet
+propagator = verlet
 iterations = 1000
 timestep   = 3600
-Planets    = 10
+planets    = 10
 
 Sole	1.9885e+30
 Mercurio	3.302e+23

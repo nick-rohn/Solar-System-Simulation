@@ -76,6 +76,9 @@ class Array {
             friend Array<U> operator/( Array<U> arr, const V& fact );
 
 
+        // print content in a table
+        template <class U>
+            friend ostream& operator<<( ostream& os, const Array<Array<U>>& arr );
         // print content in a line
         template <class U>
             friend ostream& operator<<( ostream& os, const Array<U>& arr );
