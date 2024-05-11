@@ -6,7 +6,7 @@
 using namespace std;
 
 extern int debug;
-static const int debug_deep = 11;
+static const int debug_deep = 15;
 
 
 //CONSTRUCTORS

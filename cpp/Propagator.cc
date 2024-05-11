@@ -50,7 +50,7 @@ void Propagator::Terminate(){
 void Propagator::run( const StarSystem* ssi,
                       const string ts, const string it ){
     
-    filename = type + ts + it + ".txt";
+    filename = type + '_' + ts + ".txt";
     
     timestep = Converter::TimeToSec( ts );
     iterations =  stod( it );
