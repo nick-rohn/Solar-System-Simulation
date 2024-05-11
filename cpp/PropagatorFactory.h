@@ -30,7 +30,7 @@ class PropagatorFactory {
                 // created only if, at runtime, their name is listed in the command line
                 AbsFactory( const std::string& name ) { RegisterFactory( name, this ); }
                 virtual ~AbsFactory() {}
-                virtual Propagator* create( const Settings* info, const std::string& name ) = 0;
+                virtual Propagator* create( const std::string& name ) = 0;
         };
 
     private:

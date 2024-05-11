@@ -32,7 +32,7 @@ vector<Propagator*> PropagatorFactory::create( const Settings* info ) {
     for ( const auto& element: *fm ) {
         // create analysis object if its name is listed in the command line
         if ( info->contains( element.first ) )
-            prop_list.push_back( element.second->create( info, element.first ) );
+            prop_list.push_back( element.second->create( element.first ) );
     }
     if( debug >= debug_level ) cout << "List created" << endl <<endl;
     return prop_list;

@@ -3,25 +3,26 @@
 
 #include <string>
 
-#include "Propagator.h"
+#include "PropSingle.h"
 #include "Settings.h"
+#include "Array.h"
 
-class PropRungeKutta: public Propagator{
+class PropRungeKutta: public PropSingle{
 
     public:
 
-        PropRungeKutta( const Settings* info, const std::string& name );
+        PropRungeKutta( const std::string& name );
         // deleted copy constructor and assignment to prevent unadvertent copy
         PropRungeKutta           ( const PropRungeKutta& x ) = delete;
         PropRungeKutta& operator=( const PropRungeKutta& x ) = delete;
 
         ~PropRungeKutta() override;
 
-    private:
+    protected:
+    
+        // single step propagation
+        DoubleMatrix StepS( DoubleMatrix y0 ) const override;
         
-        // function to run the propagator
-        void   Execute() override;
-
 };
 
 

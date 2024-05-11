@@ -3,14 +3,14 @@
 
 #include <string>
 
-#include "Propagator.h"
-#include "Settings.h"
+#include "PropDouble.h"
+#include "Array.h"
 
-class PropVerlet: public Propagator{
+class PropVerlet: public PropDouble{
 
     public:
 
-        PropVerlet( const Settings* info, const std::string& name );
+        PropVerlet( const std::string& name );
         // deleted copy constructor and assignment to prevent unadvertent copy
         PropVerlet           ( const PropVerlet& x ) = delete;
         PropVerlet& operator=( const PropVerlet& x ) = delete;
@@ -18,9 +18,10 @@ class PropVerlet: public Propagator{
         ~PropVerlet() override;
 
     private:
+    
+        // single step propagation
+        DoubleMatrix Step( DoubleMatrix y0, const DoubleMatrix& y1 ) const override;
         
-        // function to run the propagator
-        void   Execute() override;
 
 };
 

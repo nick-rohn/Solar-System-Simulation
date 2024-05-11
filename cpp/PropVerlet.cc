@@ -4,7 +4,10 @@
 
 #include "Propagator.h"
 #include "PropagatorFactory.h"
+#include "PropEuler.h"
 #include "Settings.h"
+#include "StarSystem.h"
+#include "Array.h"
 
 
 using namespace std;
@@ -13,21 +16,34 @@ using namespace std;
 class PropVerletFactory: public PropagatorFactory::AbsFactory{
     public:
         PropVerletFactory(): PropagatorFactory::AbsFactory( "verlet" ){}
-        Propagator* create( const Settings* info, const string& name ) override{
-            return new PropVerlet( info, name );
+        Propagator* create( const string& name ) override{
+            return new PropVerlet( name );
         }
 };
 // create global Factory, so it's registered before main execution
 static PropVerletFactory ver;
 
-PropVerlet::PropVerlet( const Settings* info, const string& name ):
-    Propagator( info, name ){
+
+
+PropVerlet::PropVerlet( const string& name ):
+    PropDouble( name ){
 }
 
 PropVerlet::~PropVerlet(){
 }
 
-// function to run the propagator
-void PropVerlet::Execute(){
-    return;
+
+
+
+// single step propagation
+DoubleMatrix PropVerlet::Step( DoubleMatrix y0, const DoubleMatrix& y1 ) const {
+
+    // force
+    DoubleMatrix f = ss->GetF( y1 );
+
+    // step
+    y0 += (2 * timestep) * f;
+
+    return y0;
+
 }

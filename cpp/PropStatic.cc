@@ -4,7 +4,6 @@
 
 #include "Propagator.h"
 #include "PropagatorFactory.h"
-#include "Settings.h"
 #include "StarSystem.h"
 #include "Array.h"
 
@@ -15,15 +14,15 @@ using namespace std;
 class PropStaticFactory: public PropagatorFactory::AbsFactory{
     public:
         PropStaticFactory(): PropagatorFactory::AbsFactory( "static" ){}
-        Propagator* create( const Settings* info, const string& name ) override{
-            return new PropStatic( info, name );
+        Propagator* create( const string& name ) override{
+            return new PropStatic( name );
         }
 };
 // create global Factory, so it's registered before main execution
 static PropStaticFactory stat;
 
-PropStatic::PropStatic( const Settings* info, const string& name ):
-    Propagator( info, name ){
+PropStatic::PropStatic( const string& name ):
+    Propagator( name ){
 }
 
 PropStatic::~PropStatic(){

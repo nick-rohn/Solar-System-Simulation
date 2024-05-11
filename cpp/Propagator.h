@@ -7,13 +7,12 @@
 using namespace std;
 
 class StarSystem;
-class Settings;
 
 class Propagator{
 
     public:
 
-        Propagator( const Settings* info, const string& name );
+        Propagator( const string& name );
         // deleted copy constructor and assignment to prevent unadvertent copy
         Propagator           ( const Propagator& x ) = delete;
         Propagator& operator=( const Propagator& x ) = delete;
@@ -27,9 +26,8 @@ class Propagator{
 
     protected:
 
-        const Settings* settings;
         // type of propagator
-        const string type = "default";
+        const string type;
         // writing file
         string filename;
         ofstream* file;

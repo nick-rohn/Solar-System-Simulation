@@ -47,11 +47,17 @@ class StarSystem{
         // retrieve planets information in matrix form
         Matrix GetMatrix( const Data& request ) const;
 
-        // calculate gravitational force
-        Matrix Gravity( const Matrix& pos ) const;
+        // calculate gravitational acceleration
+        Matrix Acceleration( const Matrix& pos ) const;
 
         // block class from further modifications
         void Lock();
+
+        // retrieve planets position and velocity
+        DoubleMatrix GetY() const;
+        
+        // retrieve planets velocity and acceleration
+        DoubleMatrix GetF( const DoubleMatrix& y ) const;
         
     private:
 

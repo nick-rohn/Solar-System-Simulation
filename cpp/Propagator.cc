@@ -4,7 +4,6 @@
 #include <fstream>
 
 #include "StarSystem.h"
-#include "Settings.h"
 #include "Converter.h"
 
 using namespace std;
@@ -12,8 +11,8 @@ using namespace std;
 extern int debug;
 static const int debug_level = 11;
 
-Propagator::Propagator( const Settings* info, const string& name ):
-    settings( info ), type( name ){
+Propagator::Propagator( const string& name ):
+    type( name ){
 }
 
 

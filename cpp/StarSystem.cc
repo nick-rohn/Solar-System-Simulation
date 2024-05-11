@@ -99,7 +99,7 @@ Matrix StarSystem::GetMatrix( const Data& request ) const {
             return velocity;
 
         case Data::grav:
-            return Gravity( position );
+            return Acceleration( position );
         
         default:
             return Matrix( planets.size() );
@@ -108,13 +108,15 @@ Matrix StarSystem::GetMatrix( const Data& request ) const {
 }
 
 
-// calculate gravitational force in given position
-Matrix StarSystem::Gravity( const Matrix& pos ) const {
+
+
+// calculate gravitational acceleration in given position
+Matrix StarSystem::Acceleration( const Matrix& pos ) const {
 
     unsigned int n = planets.size();
     Matrix grav( n );
 
-    for( u_int i = 0; i < (n-1); i++ )
+    for( u_int i = 0; i < (n-1); i++ ){
         for( u_int j = (i+1); j < n; j++ ){
             // calculate gravitational force between planets i and j
             Array<double> r = pos[j] - pos[i];
@@ -123,6 +125,10 @@ Matrix StarSystem::Gravity( const Matrix& pos ) const {
             grav[i] += f;
             grav[j] -= f;
         }
+    }
+
+    // divide by mass of each planet
+    for( u_int i = 0; i < n; i++ ) grav[i] /= masses[i];
 
     return grav;
 }
@@ -154,6 +160,22 @@ void StarSystem::Lock(){
 }
 
 
+
+
+// retrieve planets information in double matrix form
+DoubleMatrix StarSystem::GetY() const {
+
+    return DoubleMatrix( position, velocity );
+
+}
+
+
+// retrieve planets velocity and acceleration
+DoubleMatrix StarSystem::GetF( const DoubleMatrix& y ) const {
+
+    return DoubleMatrix( y[1], Acceleration( y[0] ));
+
+}
 
 // PRIVATE
 
