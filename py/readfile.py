@@ -84,7 +84,7 @@ def matrix( file: io.TextIOWrapper, n: int ):
 
     # read line by line
     for i in range(n):
-        table = file.readline().rstrip('\t\n').split('\t')
+        table = file.readline().rstrip('\n').split('\t')
         # convert number by number
         v[i] = [ float( x ) for x in table ]
 
