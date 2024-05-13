@@ -228,9 +228,10 @@ ostream& operator<<( ostream& os, const Array<Array<U>>& arr ){
 
 // print content in a line
 template <class U>
-ostream& operator<<( ostream& os, const Array<U>& arr ){
+ostream& operator<<( ostream& os, const Array<U>& arr ){   
 
-    for( u_int i = 0; i < arr.length; i++ ) os << arr.data[i] << '\t';
+    os << arr.data[0];
+    for( u_int i = 1; i < arr.length; i++ ) os << '\t' << arr.data[i];
     return os << endl;
 
 }

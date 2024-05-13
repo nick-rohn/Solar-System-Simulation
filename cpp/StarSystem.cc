@@ -9,7 +9,7 @@
 
 using namespace std;
 
-const double StarSystem::g_const = 6.674e-11;
+const double StarSystem::g_const = 6.674e-20; // (kg*km/s^2)*(km^2/kg^2)
 
 StarSystem::Planet::Planet( string n, double m,
                             double px, double py, double pz,
