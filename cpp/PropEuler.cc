@@ -39,7 +39,7 @@ DoubleMatrix PropEuler::StepS( DoubleMatrix y0 ) const {
     DoubleMatrix f = ss->GetF( y0 );
 
     // step
-    y0 += f * timestep;
+    y0 += f * cf.timestep;
 
     return y0;
 

@@ -7,6 +7,7 @@
 using namespace std;
 
 class StarSystem;
+class Settings;
 
 class Propagator{
 
@@ -20,9 +21,11 @@ class Propagator{
         virtual ~Propagator();
 
         // function to run the propagator
-        void run( const StarSystem* ssi,
-                  const string ts, const string it );
+        void run( const StarSystem* ssi );
+        // get current type of propagator
         string GetType() const;
+        // setup propagation config
+        static void Configuration( const Settings* info );
 
     protected:
 
@@ -33,9 +36,18 @@ class Propagator{
         ofstream* file;
         // pointer to star system
         const StarSystem *ss;
-        // propagation data
-        double timestep;
-        double iterations;
+
+        // propagation config
+        struct Config{
+            string p_timestep;
+            string p_duration;
+            string p_frame_l;
+            double timestep;
+            u_int64_t iterations;
+            u_int64_t frame_l;
+            void Update( string ts, string dur, string fr );
+        };
+        static Config cf;
 
     private:
 

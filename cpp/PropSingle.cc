@@ -28,9 +28,9 @@ void PropSingle::Execute(){
     *file << y0[0];
 
     // loop for iterations
-    for( int i = 0; i < iterations; i++){
+    for( u_int64_t i = 1; i <= cf.iterations; i++){
         y0 = StepS( y0 );
-        *file << y0[0];
+        if( i % cf.frame_l == 0) *file << y0[0];
     }
 
     return;

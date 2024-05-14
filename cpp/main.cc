@@ -29,9 +29,8 @@ int main( int argc, char *argv[] ){
     // create list of propagators
     vector<Propagator*> prop_list = PropagatorFactory::create( settings );
 
-    // get timestep and number of iterations for propagators
-    string ts = settings->value( "timestep" );
-    string it = settings->value( "iterations" );
+    // configure propagators
+    Propagator::Configuration( settings );
 
     // create threads for parallel execution
     vector<thread*> threads;
@@ -40,7 +39,7 @@ int main( int argc, char *argv[] ){
 
     // execute each propagator on a different thread
     for( Propagator* p : prop_list ){
-        thread* t = new thread( &Propagator::run, p, ss, ts, it );
+        thread* t = new thread( &Propagator::run, p, ss);
         threads.push_back( t );
         if( debug >= debug_level ) cout << "Thread " << p->GetType() << " initialized" << endl;
     }

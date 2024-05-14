@@ -30,8 +30,8 @@ PropStatic::~PropStatic(){
 
 // function to run the propagator
 void PropStatic::Execute(){
-    Matrix pos = ss->GetMatrix( StarSystem::Data::pos );
-    Matrix vel = ss->GetMatrix( StarSystem::Data::vel );
+    Matrix pos  = ss->GetMatrix( StarSystem::Data::pos );
+    Matrix vel  = ss->GetMatrix( StarSystem::Data::vel );
     Matrix grav = ss->GetMatrix( StarSystem::Data::grav );
     *file << pos << vel << grav;
     return;

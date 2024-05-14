@@ -3,6 +3,7 @@ verlet
 runge-kutta
 static
 timestep 1h
-iterations 100000
+duration 1000y
+frames 1d
 
 debug 10

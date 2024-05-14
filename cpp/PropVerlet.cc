@@ -42,7 +42,7 @@ DoubleMatrix PropVerlet::Step( DoubleMatrix y0, const DoubleMatrix& y1 ) const {
     DoubleMatrix f = ss->GetF( y1 );
 
     // step
-    y0 += (2 * timestep) * f;
+    y0 += (2 * cf.timestep) * f;
 
     return y0;
 

@@ -5,6 +5,7 @@
 
 #include "StarSystem.h"
 #include "Converter.h"
+#include "Settings.h"
 
 using namespace std;
 
@@ -19,6 +20,9 @@ Propagator::Propagator( const string& name ):
 Propagator::~Propagator(){
 }
 
+
+
+
 // function to be called at execution start
 void Propagator::StartUp(){
 
@@ -29,8 +33,12 @@ void Propagator::StartUp(){
 
     // print header file
     *file << "propagator = " << type       << endl;
-    *file << "iterations = " << iterations << endl;
-    *file << "timestep   = " << timestep   << endl;
+    if ( type != "static" ){
+        *file << "duration     = " << cf.p_duration << endl;
+        *file << "iterations   = " << cf.iterations << endl;
+        *file << "timestep     = " << cf.timestep   << endl;
+        *file << "frame length = " << cf.frame_l    << endl;
+    }
     ss->Print( file );
 
     if( debug >= debug_level ) cout << "File created" << endl;
@@ -40,20 +48,21 @@ void Propagator::StartUp(){
 }
 
 
+
 // function to be called at execution end
 void Propagator::Terminate(){
     delete file;
 }
 
-// function to run the propagator
-void Propagator::run( const StarSystem* ssi,
-                      const string ts, const string it ){
-    
-    filename = type + '_' + ts + ".txt";
-    
-    timestep = Converter::TimeToSec( ts );
-    iterations =  stod( it );
 
+
+
+// function to run the propagator
+void Propagator::run( const StarSystem* ssi ){
+    
+    if( type == "static" ) filename = type + ".txt";
+    else filename = type + '_' + cf.p_timestep + '_' + cf.p_duration + ".txt";
+    
     ss = ssi;
 
     StartUp();
@@ -64,6 +73,40 @@ void Propagator::run( const StarSystem* ssi,
 }
 
 
+
+
+// get current type of propagator
 string Propagator::GetType() const {
     return type;
-};
+}
+
+
+
+
+
+// save and calculate config data
+void Propagator::Config::Update( string ts, string dur, string fr ){
+
+    p_timestep = ts;
+    p_duration = dur;
+    p_frame_l  = fr;
+
+    timestep   = Converter::TimeToSec( p_timestep );
+    iterations = lround( Converter::TimeToSec( p_duration ) / timestep );
+    frame_l    = lround( Converter::TimeToSec( p_frame_l  ) / timestep );
+}
+
+
+// setup propagation config
+void Propagator::Configuration( const Settings* info){
+
+    string ts  = info->value( "timestep" );
+    string dur = info->value( "duration" );
+    string fr  = info->value(  "frames"  );
+
+    cf.Update( ts, dur, fr );
+    
+}
+
+
+Propagator::Config Propagator::cf;

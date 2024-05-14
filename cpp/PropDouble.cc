@@ -32,9 +32,9 @@ void PropDouble::Execute(){
     *file << y1[0];
 
     // loop for iterations
-    for( int i = 1; i < iterations; i++){
+    for( u_int64_t i = 1; i <= cf.iterations; i++){
         DoubleMatrix y2 = Step( y0, y1 );
-        *file << y2[0];
+        if( i % cf.frame_l == 0) *file << y2[0];
         y0 = move( y1 );
         y1 = move( y2 );
     }
