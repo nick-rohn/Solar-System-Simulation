@@ -4,6 +4,8 @@ import py.vectorplot as vplot
 
 while True:
     filename = input("File:\t")
+    if filename == 'compare':
+        anim.compare()
     if not os.path.isfile( filename ):
         print('File not found')
         continue

@@ -5,7 +5,7 @@ from mpl_toolkits.mplot3d.axes3d import Axes3D
 from matplotlib.widgets import Slider
 import numpy as np
 import datetime
-import math
+import os.path
 
 
 
@@ -71,7 +71,7 @@ def animation( filename ):
     # time passed
     time = datetime.datetime(2021,11,28)
     time_str = time.strftime('%d/%m/%Y')
-    time_text = fig.text(0.05, 0.05, time_str, verticalalignment='top', bbox = props)
+    time_text = fig.text(0.5, 0.95, time_str, verticalalignment='top', bbox = props)
     
 
 
@@ -132,3 +132,157 @@ def animation( filename ):
     plt.show()
 
     return
+
+
+
+
+
+def order_files( filename1: str, filename2: str ):
+
+    file1 = open( filename1 )
+    info1 = readfile.header( file1 )
+    ts1 = info1["frame length"] * info1["timestep"]
+    info1["ts_str"] = filename1.split('_')[1]
+
+    file2 = open( filename2 )
+    info2 = readfile.header( file2 )
+    ts2 = info2["frame length"] * info2["timestep"]
+    info2["ts_str"] = filename2.split('_')[1]
+    if ts1 >= ts2:
+        return file1, info1, ts1, file2, info2, ts2
+    else:
+        return file2, info2, ts2, file1, info1, ts1
+    
+
+
+
+def compare():
+    while True:
+        filename1 = input("File 1:\t")
+        if not os.path.isfile( filename1 ):
+            print('File not found')
+            continue
+        break
+    
+    while True:
+        filename2 = input("File 2:\t")
+        if not os.path.isfile( filename2 ):
+            print('File not found')
+            continue
+        break
+
+    
+    file1, info1, ts1, file2, info2, ts2 = order_files( filename1, filename2 )
+
+    n1 = info1["planets"]
+    planets1 = readfile.planets( file1, n1 )
+
+    
+    n2 = info2["planets"]
+    planets2 = readfile.planets( file2, n2 )
+
+    l = max( info1["iterations"], info2["iterations"] )
+
+
+
+
+    pos1 = readfile.matrix( file1, n1 )
+    pos2 = readfile.matrix( file2, n2 )
+
+    # graph
+    fig = plt.figure()
+    ax = fig.add_subplot(projection='3d')
+    ax: Axes3D
+    fig.subplots_adjust(bottom=0.25)
+    ax.set_title( info1["propagator"] + " vs " + 
+                  info2["propagator"] + " propagator" )
+    # planets
+    points1 = ax.scatter( pos1[:,0], pos1[:,1], pos1[:,2],
+                     c = range(n1), cmap='jet_r', marker='x' )
+    points2 = ax.scatter( pos2[:,0], pos2[:,1], pos2[:,2],
+                     c = range(n2), cmap='jet_r', marker='+' )
+
+
+
+    # scale
+    lim = 1.1 * abs( max( pos1.max(), pos1.min(), key = abs ) )
+    ax.set_xlim3d( [-lim, +lim] )
+    ax.set_ylim3d( [-lim, +lim] )
+    ax.set_zlim3d( [-lim, +lim] )
+    ax.set_aspect('equal')
+    
+
+    
+    # legend
+    keys1 = list( planets1.keys() )
+    handles = points1.legend_elements()[0]
+    leg1 = fig.legend( handles, keys1, loc='upper left',
+                       title = (info1["propagator"]+' ('+info1["ts_str"]+')') )
+    fig.add_artist(leg1)
+    keys2 = list( planets2.keys() )
+    handles = points2.legend_elements()[0]
+    fig.legend( handles, keys2, loc='center left',
+                title = (info2["propagator"]+' ('+info2["ts_str"]+')') )
+
+
+    # info
+    textstr = ""
+    for item in info1:
+        textstr += ( item + " = " + str(info1[item]) + '\n' )
+    textstr = textstr.rstrip('\n')
+    props = dict(boxstyle='round', facecolor = 'w', alpha = 0.3)
+
+    fig.text(0.1, 0.95, textstr, verticalalignment='top', bbox = props, linespacing=1.5)
+
+    textstr = ""
+    for item in info2:
+        textstr += ( item + " = " + str(info2[item]) + '\n' )
+    textstr = textstr.rstrip('\n')
+    props = dict(boxstyle='round', facecolor = 'w', alpha = 0.3)
+
+    fig.text(0.1, 0.5, textstr, verticalalignment='top', bbox = props, linespacing=1.5)
+
+
+
+    # time passed
+    time = datetime.datetime(2021,11,28)
+    time_str = time.strftime('%d/%m/%Y')
+    time_text = fig.text(0.5, 0.95, time_str, verticalalignment='top', bbox = props)
+    
+
+
+    # slider
+    axspeed = fig.add_axes([0.3, 0.1, 0.4, 0.03])
+    slider = Slider(ax=axspeed, label='Simulation speed',
+                    valmin=0, valmax=10, valinit=0, valstep = 1 )
+    
+    diff = int( ts1 / ts2 )
+
+    iter = 0
+    def update(frame):
+        nonlocal iter
+        nonlocal pos1
+        nonlocal pos2
+        nonlocal n1
+        nonlocal n2
+        nonlocal diff
+        if not slider.val == 0:
+            for i in range(2**(slider.val-1)):
+                iter += 1
+                pos1 = readfile.matrix( file1, n1 )
+                for j in range(diff):
+                    pos2 = readfile.matrix( file2, n2 )
+            points1.set_offsets( pos1[:,0:2] )
+            points1.set_3d_properties( pos1[:,2], 'z' )
+            points2.set_offsets( pos2[:,0:2] )
+            points2.set_3d_properties( pos2[:,2], 'z' )
+            time_delta = iter * info1["frame length"] * info1["timestep"]
+            time = datetime.datetime(2021,11,28)+datetime.timedelta(seconds=time_delta)
+            time_str = time.strftime('%d/%m/%Y')
+            time_text.set_text( time_str )
+        return points1, points2,
+
+
+    animat = an.FuncAnimation( fig, update, l, interval=100 )
+
+    plt.show()
