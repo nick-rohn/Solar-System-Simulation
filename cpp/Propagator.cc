@@ -89,11 +89,14 @@ void Propagator::Config::Update( string ts, string dur, string fr ){
 
     p_timestep = ts;
     p_duration = dur;
+    // if frame keyword not present, set same as timestep
+    if( fr == "" ) fr = ts;
     p_frame_l  = fr;
 
     timestep   = Converter::TimeToSec( p_timestep );
     iterations = lround( Converter::TimeToSec( p_duration ) / timestep );
     frame_l    = lround( Converter::TimeToSec( p_frame_l  ) / timestep );
+
 }
 
 

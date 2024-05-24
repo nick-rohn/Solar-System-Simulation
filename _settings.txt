@@ -2,8 +2,8 @@ input solar_system.dat
 verlet
 runge-kutta
 static
-timestep 1d
+timestep 10d
 duration 1000y
-frames 1d
+frames 10d
 
 debug 10
